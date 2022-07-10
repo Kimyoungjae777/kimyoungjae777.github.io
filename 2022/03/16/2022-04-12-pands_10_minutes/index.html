@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>pandas&#39;s 10minutes | 김영재</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="" />
+    
+    <meta name="description" content="table.dataframe {       white-space: normal;       width: 100%;       height: 240px;       display: block;       overflow: auto;       font-family: Arial, sans-serif;       font-size: 0.9rem;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pandas&#39;s 10minutes">
+<meta property="og:url" content="https://kimyoungjae777.github.io/2022/03/16/2022-04-12-pands_10_minutes/index.html">
+<meta property="og:site_name" content="김영재">
+<meta property="og:description" content="table.dataframe {       white-space: normal;       width: 100%;       height: 240px;       display: block;       overflow: auto;       font-family: Arial, sans-serif;       font-size: 0.9rem;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-16T00:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-26T11:27:18.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+    
+
+    
+        <link rel="alternate" href="/" title="김영재" type="application/atom+xml" />
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Machinelearning/">-Machinelearning</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%EC%A0%84%EC%B2%98%EB%A6%AC/">-전처리</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%ED%86%B5%EA%B3%84/">-통계</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Pandas/">Pandas</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Postgresql/">Postgresql</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/git-blog/">git_blog</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/numpy/">numpy</a></li></ul>
+                                
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/null">About</a>
+                                    <ul class="main-nav-list-child">
+                                        <li class="main-nav-list-item">
+                                            
+                                        </li>
+                                    </ul>
+                                </li>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Pandas/">Pandas</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-2022-04-12-pands_10_minutes" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        pandas&#39;s 10minutes
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2022/03/16/2022-04-12-pands_10_minutes/" class="article-date">
+       <time datetime="2022-03-16T00:00:00.000Z" itemprop="datePublished">2022-03-16</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2022/03/16/2022-04-12-pands_10_minutes/" class="article-date">
+     <time datetime="2022-06-26T11:27:18.000Z" itemprop="dateModified">2022-06-26</time>
+  </a>
+</div>
+
+
+                
+
+                
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <head>
+  <style>
+    table.dataframe {
+      white-space: normal;
+      width: 100%;
+      height: 240px;
+      display: block;
+      overflow: auto;
+      font-family: Arial, sans-serif;
+      font-size: 0.9rem;
+      line-height: 20px;
+      text-align: center;
+      border: 0px !important;
+    }
+
+<pre><code>table.dataframe th &#123;
+  text-align: center;
+  font-weight: bold;
+  padding: 8px;
+&#125;
+
+table.dataframe td &#123;
+  text-align: center;
+  padding: 8px;
+&#125;
+
+table.dataframe tr:hover &#123;
+  background: #b8d1f3; 
+&#125;
+
+.output_prompt &#123;
+  overflow: auto;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  border-radius: 0.3rem;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.8rem;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font: 1rem Consolas, &quot;Liberation Mono&quot;, Menlo, Courier, monospace;
+  color: $code-text-color;
+  border: solid 1px $border-color;
+  border-radius: 0.3rem;
+  word-break: normal;
+  white-space: pre;
+&#125;
+</code></pre>
+<p>  .dataframe tbody tr th:only-of-type {<br>      vertical-align: middle;<br>  }</p>
+<p>  .dataframe tbody tr th {<br>      vertical-align: top;<br>  }</p>
+<p>  .dataframe thead th {<br>      text-align: center !important;<br>      padding: 8px;<br>  }</p>
+<p>  .page__content p {<br>      margin: 0 0 0px !important;<br>  }</p>
+<p>  .page__content p &gt; strong {<br>    font-size: 0.8rem !important;<br>  }</p>
+<p>  </style></p>
+</head>
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+
+<h1 id="pandas-10분-완성"><a href="#pandas-10분-완성" class="headerlink" title="pandas 10분 완성"></a>pandas 10분 완성</h1><ul>
+<li><p>출처-BSD-3-Clause</p>
+</li>
+<li><ol>
+<li>Object Creation(객체생성)</li>
+</ol>
+</li>
+</ul>
+<p>pandas 는  값을 가지고 있는 리스트를 통해 Series를 만들고, 정수로 만들어진 인덱스를 기본값으로 불러올 것 입니다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s=pd.Series([<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,np.nan,<span class="number">6</span>,<span class="number">8</span>])</span><br><span class="line">s</span><br></pre></td></tr></table></figure>
+
+<pre>
+0    1.0
+1    3.0
+2    5.0
+3    NaN
+4    6.0
+5    8.0
+dtype: float64
+</pre>
+<p>datetime 인덱스와 레이블이 있는 열을 가지고 있는 numpy 배열을 전달하여 데이터프레임을 만듭니다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dates=pd.date_range(<span class="string">&#x27;20130101&#x27;</span>,periods=<span class="number">6</span>)</span><br><span class="line">dates </span><br><span class="line">df=pd.DataFrame(np.random.randn(<span class="number">6</span>,<span class="number">4</span>),index=dates,columns=<span class="built_in">list</span>(<span class="string">&#x27;ABCD&#x27;</span>))</span><br><span class="line"><span class="comment"># value 에 값을 넣어주고 , index 에는 date를 넣어주고, 컬럼에는 ABCD</span></span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D
+2013-01-01  0.867751  0.483668  0.804306 -0.943246
+2013-01-02 -0.947881  0.482789 -0.044766 -0.799984
+2013-01-03  0.089794  0.407933 -0.081971  1.088698
+2013-01-04 -0.671818  1.295661 -0.677348  0.135460
+2013-01-05  0.519066 -1.204134  1.747446  0.641655
+2013-01-06 -0.528972 -0.741428  0.454718 -0.983917
+</pre>
+<ul>
+<li>Series 와 같은 것으로 변환될 수 있는 객체들의 dict로 구성된 데이터프레임을 만듭니다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">d2=pd.DataFrame(&#123;<span class="string">&#x27;A&#x27;</span>:<span class="number">1</span>,</span><br><span class="line">                 <span class="string">&#x27;B&#x27;</span>:pd.Timestamp(<span class="string">&#x27;20130102&#x27;</span>),</span><br><span class="line">                 <span class="string">&#x27;C&#x27;</span>:pd.Series(<span class="number">1</span>,index=<span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">4</span>)),dtype=<span class="string">&#x27;float32&#x27;</span>),</span><br><span class="line">                 <span class="string">&#x27;D&#x27;</span>:np.array([<span class="number">3</span>]*<span class="number">4</span>,dtype=<span class="string">&#x27;int32&#x27;</span>),</span><br><span class="line">                 <span class="string">&#x27;E&#x27;</span>:pd.Categorical([<span class="string">&quot;test&quot;</span>,<span class="string">&quot;train&quot;</span>,<span class="string">&quot;test&quot;</span>,<span class="string">&quot;train&quot;</span>]),</span><br><span class="line">                 <span class="string">&#x27;F&#x27;</span>:<span class="string">&#x27;foo&#x27;</span>&#125;)</span><br><span class="line"></span><br><span class="line">d2</span><br></pre></td></tr></table></figure>
+
+<pre>
+   A          B    C  D      E    F
+0  1 2013-01-02  1.0  3   test  foo
+1  1 2013-01-02  1.0  3  train  foo
+2  1 2013-01-02  1.0  3   test  foo
+3  1 2013-01-02  1.0  3  train  foo
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d2.dtypes   <span class="comment"># 다양한 데이터 타입으로 저장</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+A             int64
+B    datetime64[ns]
+C           float32
+D             int32
+E          category
+F            object
+dtype: object
+</pre>
+<h1 id="2-Viewing-Data-데이터-확인하기"><a href="#2-Viewing-Data-데이터-확인하기" class="headerlink" title="2.Viewing Data (데이터 확인하기.)"></a>2.Viewing Data (데이터 확인하기.)</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.tail(<span class="number">3</span>)<span class="comment"># 데이터프레임을 끝에서 3줄만 출력</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D
+2013-01-04 -0.671818  1.295661 -0.677348  0.135460
+2013-01-05  0.519066 -1.204134  1.747446  0.641655
+2013-01-06 -0.528972 -0.741428  0.454718 -0.983917
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.index) <span class="comment"># 인덱스를 보여주며, 인덱스의 data_type 를 알려줍니다. </span></span><br><span class="line"><span class="built_in">print</span>(d2.index)</span><br></pre></td></tr></table></figure>
+
+<pre>
+DatetimeIndex(['2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04',
+               '2013-01-05', '2013-01-06'],
+              dtype='datetime64[ns]', freq='D')
+Int64Index([0, 1, 2, 3], dtype='int64')
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.columns) <span class="comment"># 컬럼를 보여주며, 컬럼의 data_type 를 알려줍니다. </span></span><br><span class="line"><span class="built_in">print</span>(d2.columns)</span><br></pre></td></tr></table></figure>
+
+<pre>
+Index(['A', 'B', 'C', 'D'], dtype='object')
+Index(['A', 'B', 'C', 'D', 'E', 'F'], dtype='object')
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.values) <span class="comment"># 인덱스를 보여주며, 인덱스의 data_type 를 알려줍니다. </span></span><br><span class="line"><span class="built_in">print</span>(d2.values)</span><br></pre></td></tr></table></figure>
+
+<pre>
+[[ 0.86775054  0.48366818  0.80430646 -0.94324588]
+ [-0.947881    0.48278913 -0.0447657  -0.79998396]
+ [ 0.08979353  0.40793256 -0.08197077  1.08869764]
+ [-0.67181835  1.29566098 -0.67734781  0.13546042]
+ [ 0.51906627 -1.20413362  1.74744631  0.64165489]
+ [-0.52897166 -0.74142796  0.4547179  -0.98391684]]
+[[1 Timestamp('2013-01-02 00:00:00') 1.0 3 'test' 'foo']
+ [1 Timestamp('2013-01-02 00:00:00') 1.0 3 'train' 'foo']
+ [1 Timestamp('2013-01-02 00:00:00') 1.0 3 'test' 'foo']
+ [1 Timestamp('2013-01-02 00:00:00') 1.0 3 'train' 'foo']]
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.describe())  <span class="comment"># 데이터의 대략적인 통계적 정보요약을 보여줍니다</span></span><br><span class="line"><span class="built_in">print</span>(d2.describe())</span><br></pre></td></tr></table></figure>
+
+<pre>
+              A         B         C         D
+count  6.000000  6.000000  6.000000  6.000000
+mean  -0.112010  0.120748  0.367064 -0.143556
+std    0.719004  0.919167  0.844553  0.893248
+min   -0.947881 -1.204134 -0.677348 -0.983917
+25%   -0.636107 -0.454088 -0.072670 -0.907430
+50%   -0.219589  0.445361  0.204976 -0.332262
+75%    0.411748  0.483448  0.716909  0.515106
+max    0.867751  1.295661  1.747446  1.088698
+         A    C    D
+count  4.0  4.0  4.0
+mean   1.0  1.0  3.0
+std    0.0  0.0  0.0
+min    1.0  1.0  3.0
+25%    1.0  1.0  3.0
+50%    1.0  1.0  3.0
+75%    1.0  1.0  3.0
+max    1.0  1.0  3.0
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.T)  <span class="comment"># 데이터를 전치 합니다</span></span><br><span class="line"><span class="built_in">print</span>(d2.T)</span><br></pre></td></tr></table></figure>
+
+<pre>
+   2013-01-01  2013-01-02  2013-01-03  2013-01-04  2013-01-05  2013-01-06
+A    0.867751   -0.947881    0.089794   -0.671818    0.519066   -0.528972
+B    0.483668    0.482789    0.407933    1.295661   -1.204134   -0.741428
+C    0.804306   -0.044766   -0.081971   -0.677348    1.747446    0.454718
+D   -0.943246   -0.799984    1.088698    0.135460    0.641655   -0.983917
+                     0                    1                    2  \
+A                    1                    1                    1   
+B  2013-01-02 00:00:00  2013-01-02 00:00:00  2013-01-02 00:00:00   
+C                  1.0                  1.0                  1.0   
+D                    3                    3                    3   
+E                 test                train                 test   
+F                  foo                  foo                  foo   
+
+                     3  
+A                    1  
+B  2013-01-02 00:00:00  
+C                  1.0  
+D                    3  
+E                train  
+F                  foo  
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.sort_index(axis=<span class="number">1</span>,ascending=<span class="literal">False</span>)) <span class="comment"># 축 별로 정렬. axis=1 =&gt;goddmf rlwnsdmfh </span></span><br><span class="line"><span class="built_in">print</span>(df.sort_index(axis=<span class="number">0</span>,ascending=<span class="literal">False</span>))</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   D         C         B         A
+2013-01-01 -0.943246  0.804306  0.483668  0.867751
+2013-01-02 -0.799984 -0.044766  0.482789 -0.947881
+2013-01-03  1.088698 -0.081971  0.407933  0.089794
+2013-01-04  0.135460 -0.677348  1.295661 -0.671818
+2013-01-05  0.641655  1.747446 -1.204134  0.519066
+2013-01-06 -0.983917  0.454718 -0.741428 -0.528972
+                   A         B         C         D
+2013-01-06 -0.528972 -0.741428  0.454718 -0.983917
+2013-01-05  0.519066 -1.204134  1.747446  0.641655
+2013-01-04 -0.671818  1.295661 -0.677348  0.135460
+2013-01-03  0.089794  0.407933 -0.081971  1.088698
+2013-01-02 -0.947881  0.482789 -0.044766 -0.799984
+2013-01-01  0.867751  0.483668  0.804306 -0.943246
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.sort_values(by=<span class="string">&#x27;B&#x27;</span>,ascending=<span class="literal">False</span>) <span class="comment">#값별로 정렬</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D
+2013-01-04 -0.671818  1.295661 -0.677348  0.135460
+2013-01-01  0.867751  0.483668  0.804306 -0.943246
+2013-01-02 -0.947881  0.482789 -0.044766 -0.799984
+2013-01-03  0.089794  0.407933 -0.081971  1.088698
+2013-01-06 -0.528972 -0.741428  0.454718 -0.983917
+2013-01-05  0.519066 -1.204134  1.747446  0.641655
+</pre>
+<h1 id="3-Selection-선택"><a href="#3-Selection-선택" class="headerlink" title="3.Selection (선택)"></a>3.Selection (선택)</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#행을 분할하는 []를 통해 선택합니다.</span></span><br><span class="line">df[<span class="number">0</span>:<span class="number">3</span>]<span class="comment"># 모든행 3열까지 출력 </span></span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D
+2013-01-01  0.867751  0.483668  0.804306 -0.943246
+2013-01-02 -0.947881  0.482789 -0.044766 -0.799984
+2013-01-03  0.089794  0.407933 -0.081971  1.088698
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 인덱스 코드로 출력 </span></span><br><span class="line">df[<span class="string">&#x27;20130102&#x27;</span>:<span class="string">&#x27;20130104&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D
+2013-01-02 -0.947881  0.482789 -0.044766 -0.799984
+2013-01-03  0.089794  0.407933 -0.081971  1.088698
+2013-01-04 -0.671818  1.295661 -0.677348  0.135460
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.loc[dates[<span class="number">0</span>]] <span class="comment">#dates 컬럼 모든것 출력</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+A    0.867751
+B    0.483668
+C    0.804306
+D   -0.943246
+Name: 2013-01-01 00:00:00, dtype: float64
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.loc[:,[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>]]</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B
+2013-01-01  0.867751  0.483668
+2013-01-02 -0.947881  0.482789
+2013-01-03  0.089794  0.407933
+2013-01-04 -0.671818  1.295661
+2013-01-05  0.519066 -1.204134
+2013-01-06 -0.528972 -0.741428
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.loc[<span class="string">&quot;20130102&quot;</span>:<span class="string">&#x27;20130104&#x27;</span>,[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>]]</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B
+2013-01-02 -0.947881  0.482789
+2013-01-03  0.089794  0.407933
+2013-01-04 -0.671818  1.295661
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.loc[<span class="string">&#x27;20130102&#x27;</span>,[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>]]</span><br></pre></td></tr></table></figure>
+
+<pre>
+A   -0.947881
+B    0.482789
+Name: 2013-01-02 00:00:00, dtype: float64
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.at[dates[<span class="number">0</span>],<span class="string">&#x27;A&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<pre>
+0.8677505440016215
+</pre>
+<ul>
+<li>위치로 선택하기</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.iloc[<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<pre>
+A   -0.671818
+B    1.295661
+C   -0.677348
+D    0.135460
+Name: 2013-01-04 00:00:00, dtype: float64
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.iloc[<span class="number">3</span>:<span class="number">5</span>,<span class="number">0</span>:<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B
+2013-01-04 -0.671818  1.295661
+2013-01-05  0.519066 -1.204134
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D
+2013-01-01  0.867751  0.483668  0.804306 -0.943246
+2013-01-02 -0.947881  0.482789 -0.044766 -0.799984
+2013-01-03  0.089794  0.407933 -0.081971  1.088698
+2013-01-04 -0.671818  1.295661 -0.677348  0.135460
+2013-01-05  0.519066 -1.204134  1.747446  0.641655
+2013-01-06 -0.528972 -0.741428  0.454718 -0.983917
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.iloc[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>],[<span class="number">0</span>,<span class="number">2</span>]]</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         C
+2013-01-02 -0.947881 -0.044766
+2013-01-03  0.089794 -0.081971
+2013-01-05  0.519066  1.747446
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.iloc[<span class="number">1</span>:<span class="number">3</span>,:]</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D
+2013-01-02 -0.947881  0.482789 -0.044766 -0.799984
+2013-01-03  0.089794  0.407933 -0.081971  1.088698
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.iloc[:,<span class="number">1</span>:<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   B         C
+2013-01-01  0.483668  0.804306
+2013-01-02  0.482789 -0.044766
+2013-01-03  0.407933 -0.081971
+2013-01-04  1.295661 -0.677348
+2013-01-05 -1.204134  1.747446
+2013-01-06 -0.741428  0.454718
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.iloc[<span class="number">1</span>,<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<pre>
+0.48278913296263115
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.iat[<span class="number">1</span>,<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<pre>
+0.48278913296263115
+</pre>
+<h1 id="Boolean-Indexing"><a href="#Boolean-Indexing" class="headerlink" title="Boolean Indexing"></a>Boolean Indexing</h1><ul>
+<li>데이터를 선택하기 위해 단일 열의 값을 사용한다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[df.A&gt;<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D
+2013-01-01  0.867751  0.483668  0.804306 -0.943246
+2013-01-03  0.089794  0.407933 -0.081971  1.088698
+2013-01-05  0.519066 -1.204134  1.747446  0.641655
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[df&gt;<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D
+2013-01-01  0.867751  0.483668  0.804306       NaN
+2013-01-02       NaN  0.482789       NaN       NaN
+2013-01-03  0.089794  0.407933       NaN  1.088698
+2013-01-04       NaN  1.295661       NaN  0.135460
+2013-01-05  0.519066       NaN  1.747446  0.641655
+2013-01-06       NaN       NaN  0.454718       NaN
+</pre>
+<ul>
+<li>필터링을 위한 메소드 isin()을 사용합니다</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df2=df.copy()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df2[<span class="string">&#x27;E&#x27;</span>]=[<span class="string">&#x27;one&#x27;</span>,<span class="string">&#x27;one&#x27;</span>,<span class="string">&#x27;two&#x27;</span>,<span class="string">&#x27;three&#x27;</span>,<span class="string">&#x27;four&#x27;</span>,<span class="string">&#x27;two&#x27;</span>]</span><br><span class="line">df2</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D      E
+2013-01-01  0.867751  0.483668  0.804306 -0.943246    one
+2013-01-02 -0.947881  0.482789 -0.044766 -0.799984    one
+2013-01-03  0.089794  0.407933 -0.081971  1.088698    two
+2013-01-04 -0.671818  1.295661 -0.677348  0.135460  three
+2013-01-05  0.519066 -1.204134  1.747446  0.641655   four
+2013-01-06 -0.528972 -0.741428  0.454718 -0.983917    two
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df2[df2[<span class="string">&#x27;E&#x27;</span>].isin([<span class="string">&#x27;two&#x27;</span>,<span class="string">&#x27;four&#x27;</span>])]</span><br><span class="line"><span class="built_in">print</span>(df2)</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D      E
+2013-01-01  0.867751  0.483668  0.804306 -0.943246    one
+2013-01-02 -0.947881  0.482789 -0.044766 -0.799984    one
+2013-01-03  0.089794  0.407933 -0.081971  1.088698    two
+2013-01-04 -0.671818  1.295661 -0.677348  0.135460  three
+2013-01-05  0.519066 -1.204134  1.747446  0.641655   four
+2013-01-06 -0.528972 -0.741428  0.454718 -0.983917    two
+</pre>
+<h1 id="setting-설정"><a href="#setting-설정" class="headerlink" title="setting (설정)"></a>setting (설정)</h1><ul>
+<li>새 열을 설정하면 데이터가 인덱스 별로 자동 정렬됩니다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1=pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],index=pd.date_range(<span class="string">&#x27;20130102&#x27;</span>,periods=<span class="number">6</span>))</span><br><span class="line">s1</span><br></pre></td></tr></table></figure>
+
+<pre>
+2013-01-02    1
+2013-01-03    2
+2013-01-04    3
+2013-01-05    4
+2013-01-06    5
+2013-01-07    6
+Freq: D, dtype: int64
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;F&#x27;</span>]=s1</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.at[dates[<span class="number">0</span>],<span class="string">&#x27;A&#x27;</span>]=<span class="number">0</span></span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D    F
+2013-01-01  0.000000  0.483668  0.804306 -0.943246  NaN
+2013-01-02 -0.947881  0.482789 -0.044766 -0.799984  1.0
+2013-01-03  0.089794  0.407933 -0.081971  1.088698  2.0
+2013-01-04 -0.671818  1.295661 -0.677348  0.135460  3.0
+2013-01-05  0.519066 -1.204134  1.747446  0.641655  4.0
+2013-01-06 -0.528972 -0.741428  0.454718 -0.983917  5.0
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.iat[<span class="number">0</span>,<span class="number">1</span>]=<span class="number">0</span></span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C         D    F
+2013-01-01  0.000000  0.000000  0.804306 -0.943246  NaN
+2013-01-02 -0.947881  0.482789 -0.044766 -0.799984  1.0
+2013-01-03  0.089794  0.407933 -0.081971  1.088698  2.0
+2013-01-04 -0.671818  1.295661 -0.677348  0.135460  3.0
+2013-01-05  0.519066 -1.204134  1.747446  0.641655  4.0
+2013-01-06 -0.528972 -0.741428  0.454718 -0.983917  5.0
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.loc[:,<span class="string">&#x27;D&#x27;</span>]=np.array([<span class="number">5</span>]*<span class="built_in">len</span>(df))</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C  D    F
+2013-01-01  0.000000  0.000000  0.804306  5  NaN
+2013-01-02 -0.947881  0.482789 -0.044766  5  1.0
+2013-01-03  0.089794  0.407933 -0.081971  5  2.0
+2013-01-04 -0.671818  1.295661 -0.677348  5  3.0
+2013-01-05  0.519066 -1.204134  1.747446  5  4.0
+2013-01-06 -0.528972 -0.741428  0.454718  5  5.0
+</pre>
+<h1 id="where-연산을-설정합니다"><a href="#where-연산을-설정합니다" class="headerlink" title="where 연산을 설정합니다"></a>where 연산을 설정합니다</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df2=df.copy()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df2[df2&gt;<span class="number">0</span>]=-df2</span><br><span class="line">df2</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C  D    F
+2013-01-01  0.000000  0.000000 -0.804306 -5  NaN
+2013-01-02 -0.947881 -0.482789 -0.044766 -5 -1.0
+2013-01-03 -0.089794 -0.407933 -0.081971 -5 -2.0
+2013-01-04 -0.671818 -1.295661 -0.677348 -5 -3.0
+2013-01-05 -0.519066 -1.204134 -1.747446 -5 -4.0
+2013-01-06 -0.528972 -0.741428 -0.454718 -5 -5.0
+</pre>
+<h1 id="4-Missing-Data-결측치"><a href="#4-Missing-Data-결측치" class="headerlink" title="4. Missing Data(결측치)"></a>4. Missing Data(결측치)</h1><ul>
+<li>pandas는 결측치를 표현하기 위해 주로 np.nan 값을 사용합니다. 이 방법은 기본 설정값이지만 계산에는 포함되지 않습니다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df1=df.reindex(index=dates[<span class="number">0</span>:<span class="number">4</span>],columns=<span class="built_in">list</span>(df.columns)+[<span class="string">&#x27;E&#x27;</span>])</span><br><span class="line">df1</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C  D    F   E
+2013-01-01  0.000000  0.000000  0.804306  5  NaN NaN
+2013-01-02 -0.947881  0.482789 -0.044766  5  1.0 NaN
+2013-01-03  0.089794  0.407933 -0.081971  5  2.0 NaN
+2013-01-04 -0.671818  1.295661 -0.677348  5  3.0 NaN
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df1.loc[dates[<span class="number">0</span>]:dates[<span class="number">1</span>],<span class="string">&#x27;E&#x27;</span>]=<span class="number">1</span>  <span class="comment">#0과 1행렬 E 컬럼에 1을 넣어준다.</span></span><br><span class="line">df1</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C  D    F    E
+2013-01-01  0.000000  0.000000  0.804306  5  NaN  1.0
+2013-01-02 -0.947881  0.482789 -0.044766  5  1.0  1.0
+2013-01-03  0.089794  0.407933 -0.081971  5  2.0  NaN
+2013-01-04 -0.671818  1.295661 -0.677348  5  3.0  NaN
+</pre>
+<ul>
+<li>결측치를 가지고 있는 행들을 지운다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df1.dropna(how=<span class="string">&#x27;any&#x27;</span>) <span class="comment"># 어떤 컬럼이던지 결측치가 있으면 삭제해라</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C  D    F    E
+2013-01-02 -0.947881  0.482789 -0.044766  5  1.0  1.0
+</pre>
+<ul>
+<li>결측치를 채워넣는다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df1=df1.fillna(value=<span class="number">5</span>)</span><br><span class="line">df1</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C  D    F    E
+2013-01-01  0.000000  0.000000  0.804306  5  5.0  1.0
+2013-01-02 -0.947881  0.482789 -0.044766  5  1.0  1.0
+2013-01-03  0.089794  0.407933 -0.081971  5  2.0  5.0
+2013-01-04 -0.671818  1.295661 -0.677348  5  3.0  5.0
+</pre>
+<ul>
+<li>boolean 으로, 결측치 확인하기.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.isna(df1)</span><br></pre></td></tr></table></figure>
+
+<pre>
+                A      B      C      D      F      E
+2013-01-01  False  False  False  False  False  False
+2013-01-02  False  False  False  False  False  False
+2013-01-03  False  False  False  False  False  False
+2013-01-04  False  False  False  False  False  False
+</pre>
+<h1 id="Operation-연산"><a href="#Operation-연산" class="headerlink" title="Operation (연산)"></a>Operation (연산)</h1><ul>
+<li>Stats(통계)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C  D    F
+2013-01-01  0.000000  0.000000  0.804306  5  NaN
+2013-01-02 -0.947881  0.482789 -0.044766  5  1.0
+2013-01-03  0.089794  0.407933 -0.081971  5  2.0
+2013-01-04 -0.671818  1.295661 -0.677348  5  3.0
+2013-01-05  0.519066 -1.204134  1.747446  5  4.0
+2013-01-06 -0.528972 -0.741428  0.454718  5  5.0
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.mean()  <span class="comment"># default 컬럼별</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+A   -0.256635
+B    0.040137
+C    0.367064
+D    5.000000
+F    3.000000
+dtype: float64
+</pre>
+<ul>
+<li>축을 바꾸어서도 실행할 수 있다</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.mean(<span class="number">1</span>) <span class="comment"># 인덱스별</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+2013-01-01    1.451077
+2013-01-02    1.098028
+2013-01-03    1.483151
+2013-01-04    1.589299
+2013-01-05    2.012476
+2013-01-06    1.836864
+Freq: D, dtype: float64
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s=pd.Series([<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,np.nan,<span class="number">6</span>,<span class="number">8</span>],index=dates).shift(<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(s)</span><br><span class="line"><span class="built_in">print</span>(df)</span><br></pre></td></tr></table></figure>
+
+<pre>
+2013-01-01    NaN
+2013-01-02    NaN
+2013-01-03    1.0
+2013-01-04    3.0
+2013-01-05    5.0
+2013-01-06    NaN
+Freq: D, dtype: float64
+                   A         B         C  D    F
+2013-01-01  0.000000  0.000000  0.804306  5  NaN
+2013-01-02 -0.947881  0.482789 -0.044766  5  1.0
+2013-01-03  0.089794  0.407933 -0.081971  5  2.0
+2013-01-04 -0.671818  1.295661 -0.677348  5  3.0
+2013-01-05  0.519066 -1.204134  1.747446  5  4.0
+2013-01-06 -0.528972 -0.741428  0.454718  5  5.0
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.sub(s,axis=<span class="string">&#x27;index&#x27;</span>)  <span class="comment">#  index 를 기준으로 했기 때문에, 값이 없는 부분은 nan 이 뜨고 값이 있는 부분은 그 부분 끼리 빼준다 broadcasting 적용 된 것</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C    D    F
+2013-01-01       NaN       NaN       NaN  NaN  NaN
+2013-01-02       NaN       NaN       NaN  NaN  NaN
+2013-01-03 -0.910206 -0.592067 -1.081971  4.0  1.0
+2013-01-04 -3.671818 -1.704339 -3.677348  2.0  0.0
+2013-01-05 -4.480934 -6.204134 -3.252554  0.0 -1.0
+2013-01-06       NaN       NaN       NaN  NaN  NaN
+</pre>
+<h1 id="Apply-적용"><a href="#Apply-적용" class="headerlink" title="Apply(적용)"></a>Apply(적용)</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df)</span><br><span class="line"><span class="built_in">print</span>(df.apply(np.cumsum)) <span class="comment"># 축에 따라 밑으로 갈 수록 누적 합계</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C  D    F
+2013-01-01  0.000000  0.000000  0.804306  5  NaN
+2013-01-02 -0.947881  0.482789 -0.044766  5  1.0
+2013-01-03  0.089794  0.407933 -0.081971  5  2.0
+2013-01-04 -0.671818  1.295661 -0.677348  5  3.0
+2013-01-05  0.519066 -1.204134  1.747446  5  4.0
+2013-01-06 -0.528972 -0.741428  0.454718  5  5.0
+                   A         B         C   D     F
+2013-01-01  0.000000  0.000000  0.804306   5   NaN
+2013-01-02 -0.947881  0.482789  0.759541  10   1.0
+2013-01-03 -0.858087  0.890722  0.677570  15   3.0
+2013-01-04 -1.529906  2.186383  0.000222  20   6.0
+2013-01-05 -1.010840  0.982249  1.747668  25  10.0
+2013-01-06 -1.539811  0.240821  2.202386  30  15.0
+</pre>
+<h1 id="lambda"><a href="#lambda" class="headerlink" title="lambda"></a>lambda</h1><ul>
+<li><p>def로 굳이 함수를 명명하지 않고 apply 함수 뒤에 lambda를 이용하는 방법도 있다. </p>
+</li>
+<li><p>데이터프레임명.적용할 컬럼명.apply(lambda x:기능서술)</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df)</span><br><span class="line"><span class="built_in">print</span>(df.apply(<span class="keyword">lambda</span> x:x.<span class="built_in">max</span>()))  <span class="comment"># 각열마다 최댓값 </span></span><br></pre></td></tr></table></figure>
+
+<pre>
+                   A         B         C  D    F
+2013-01-01  0.000000  0.000000  0.804306  5  NaN
+2013-01-02 -0.947881  0.482789 -0.044766  5  1.0
+2013-01-03  0.089794  0.407933 -0.081971  5  2.0
+2013-01-04 -0.671818  1.295661 -0.677348  5  3.0
+2013-01-05  0.519066 -1.204134  1.747446  5  4.0
+2013-01-06 -0.528972 -0.741428  0.454718  5  5.0
+A    0.519066
+B    1.295661
+C    1.747446
+D    5.000000
+F    5.000000
+dtype: float64
+</pre>
+<h1 id="Histogramming-히스토그래밍"><a href="#Histogramming-히스토그래밍" class="headerlink" title="Histogramming(히스토그래밍)"></a>Histogramming(히스토그래밍)</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s=pd.Series(np.random.randint(<span class="number">0</span>,<span class="number">7</span>,size=<span class="number">10</span>))  <span class="comment">#0부터 7사이의 값을 10개 랜덤</span></span><br><span class="line">s</span><br></pre></td></tr></table></figure>
+
+<pre>
+0    2
+1    6
+2    2
+3    3
+4    6
+5    1
+6    1
+7    1
+8    3
+9    1
+dtype: int64
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s.value_counts()   <span class="comment"># 각 값의 갯수 카운팅</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+1    4
+2    2
+6    2
+3    2
+dtype: int64
+</pre>
+<h1 id="String-Methods"><a href="#String-Methods" class="headerlink" title="String Methods"></a>String Methods</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = pd.Series([<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;Aaba&#x27;</span>, <span class="string">&#x27;Baca&#x27;</span>, np.nan, <span class="string">&#x27;CABA&#x27;</span>, <span class="string">&#x27;dog&#x27;</span>, <span class="string">&#x27;cat&#x27;</span>])</span><br><span class="line">s</span><br></pre></td></tr></table></figure>
+
+<pre>
+0       A
+1       B
+2       C
+3    Aaba
+4    Baca
+5     NaN
+6    CABA
+7     dog
+8     cat
+dtype: object
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s.<span class="built_in">str</span>.lower()  <span class="comment">#  s의 문자열을 다 소문자를 써라.</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+0       a
+1       b
+2       c
+3    aaba
+4    baca
+5     NaN
+6    caba
+7     dog
+8     cat
+dtype: object
+</pre>
+<h1 id="Merge"><a href="#Merge" class="headerlink" title="Merge"></a>Merge</h1><ul>
+<li>Concat(연결)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df=pd.DataFrame(np.random.randn(<span class="number">10</span>,<span class="number">4</span>))  <span class="comment">#10행 4열 random 으로 만들어라</span></span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<pre>
+          0         1         2         3
+0  1.262212  0.955071  0.203384  0.508407
+1  0.512366  2.174993 -1.555680  0.617319
+2  0.586218  0.729675 -0.328818 -1.401425
+3 -1.025362  0.487188 -0.605979 -0.655267
+4  1.446434  0.578147  0.249187  0.808614
+5  1.827873  1.416959 -2.200127 -0.075029
+6 -1.802936 -0.342006  0.971964  0.316691
+7 -0.298966  1.571829 -1.589146 -0.240107
+8  1.457950 -0.184842 -1.340462 -0.566541
+9 -1.402115  1.613607 -0.019760 -1.038753
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pices=[df[:<span class="number">3</span>],df[<span class="number">3</span>:<span class="number">7</span>],df[<span class="number">7</span>:]]</span><br><span class="line">pices</span><br></pre></td></tr></table></figure>
+
+<pre>
+[          0         1         2         3
+ 0  1.262212  0.955071  0.203384  0.508407
+ 1  0.512366  2.174993 -1.555680  0.617319
+ 2  0.586218  0.729675 -0.328818 -1.401425,
+           0         1         2         3
+ 3 -1.025362  0.487188 -0.605979 -0.655267
+ 4  1.446434  0.578147  0.249187  0.808614
+ 5  1.827873  1.416959 -2.200127 -0.075029
+ 6 -1.802936 -0.342006  0.971964  0.316691,
+           0         1         2         3
+ 7 -0.298966  1.571829 -1.589146 -0.240107
+ 8  1.457950 -0.184842 -1.340462 -0.566541
+ 9 -1.402115  1.613607 -0.019760 -1.038753]
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.concat(pices)  <span class="comment"># 축에따라 위 아래 붙이는 함수.  3개의 리스트로 이루어져있던 함수를 합침.</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+          0         1         2         3
+0  1.262212  0.955071  0.203384  0.508407
+1  0.512366  2.174993 -1.555680  0.617319
+2  0.586218  0.729675 -0.328818 -1.401425
+3 -1.025362  0.487188 -0.605979 -0.655267
+4  1.446434  0.578147  0.249187  0.808614
+5  1.827873  1.416959 -2.200127 -0.075029
+6 -1.802936 -0.342006  0.971964  0.316691
+7 -0.298966  1.571829 -1.589146 -0.240107
+8  1.457950 -0.184842 -1.340462 -0.566541
+9 -1.402115  1.613607 -0.019760 -1.038753
+</pre>
+<ul>
+<li><p>join(결합)</p>
+</li>
+<li><p>SQL 방식으로 병합합니다.</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">left=pd.DataFrame(&#123;<span class="string">&#x27;key&#x27;</span>:[<span class="string">&#x27;foo&#x27;</span>,<span class="string">&#x27;foo&#x27;</span>],<span class="string">&#x27;lval&#x27;</span>:[<span class="number">1</span>,<span class="number">2</span>]&#125;)</span><br><span class="line">right=pd.DataFrame(&#123;<span class="string">&#x27;key&#x27;</span>:[<span class="string">&#x27;foo&#x27;</span>,<span class="string">&#x27;foo&#x27;</span>],<span class="string">&#x27;lval&#x27;</span>:[<span class="number">4</span>,<span class="number">5</span>]&#125;)</span><br><span class="line"><span class="built_in">print</span>(left)</span><br><span class="line"><span class="built_in">print</span>(right)</span><br></pre></td></tr></table></figure>
+
+<pre>
+   key  lval
+0  foo     1
+1  foo     2
+   key  lval
+0  foo     4
+1  foo     5
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.merge(left,right,on=<span class="string">&#x27;key&#x27;</span>)  <span class="comment">#on =&gt; 기준 컬럼명을 써준다. </span></span><br></pre></td></tr></table></figure>
+
+<pre>
+   key  lval_x  lval_y
+0  foo       1       4
+1  foo       1       5
+2  foo       2       4
+3  foo       2       5
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">left = pd.DataFrame(&#123;<span class="string">&#x27;key&#x27;</span> : [<span class="string">&#x27;foo&#x27;</span>, <span class="string">&#x27;bar&#x27;</span>], <span class="string">&#x27;lval&#x27;</span> : [<span class="number">1</span>, <span class="number">2</span>]&#125;)</span><br><span class="line">right = pd.DataFrame(&#123;<span class="string">&#x27;key&#x27;</span>: [<span class="string">&#x27;foo&#x27;</span>, <span class="string">&#x27;bar&#x27;</span>], <span class="string">&#x27;rval&#x27;</span>: [<span class="number">4</span>, <span class="number">5</span>]&#125;)</span><br><span class="line"><span class="built_in">print</span>(left)</span><br><span class="line"><span class="built_in">print</span>(right)</span><br><span class="line"><span class="built_in">print</span>(pd.merge(left, right, on= <span class="string">&#x27;key&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<pre>
+   key  lval
+0  foo     1
+1  bar     2
+   key  rval
+0  foo     4
+1  bar     5
+   key  lval  rval
+0  foo     1     4
+1  bar     2     5
+</pre>
+<ul>
+<li>Append(추가)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = pd.DataFrame(np.random.randn(<span class="number">8</span>, <span class="number">4</span>), columns=[<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>])</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<pre>
+          A         B         C         D
+0 -1.956503  0.016695 -1.376558  0.882448
+1 -3.313167 -0.644514  0.439943 -2.580286
+2  0.575209  0.129929  1.329659 -0.101877
+3  0.332593 -0.398031  1.001786  0.371959
+4 -0.305303 -0.695755 -0.817616  0.965844
+5  0.599091 -0.984070 -1.422782 -2.028921
+6  1.295195 -0.209816  2.010686  0.409705
+7  0.268063  2.963411  1.338692 -0.083000
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s=df.iloc[<span class="number">3</span>]</span><br><span class="line">s</span><br></pre></td></tr></table></figure>
+
+<pre>
+A    0.332593
+B   -0.398031
+C    1.001786
+D    0.371959
+Name: 3, dtype: float64
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df)</span><br><span class="line"><span class="built_in">print</span>(df.append(s,ignore_index=<span class="literal">True</span>))</span><br></pre></td></tr></table></figure>
+
+<pre>
+          A         B         C         D
+0 -1.956503  0.016695 -1.376558  0.882448
+1 -3.313167 -0.644514  0.439943 -2.580286
+2  0.575209  0.129929  1.329659 -0.101877
+3  0.332593 -0.398031  1.001786  0.371959
+4 -0.305303 -0.695755 -0.817616  0.965844
+5  0.599091 -0.984070 -1.422782 -2.028921
+6  1.295195 -0.209816  2.010686  0.409705
+7  0.268063  2.963411  1.338692 -0.083000
+          A         B         C         D
+0 -1.956503  0.016695 -1.376558  0.882448
+1 -3.313167 -0.644514  0.439943 -2.580286
+2  0.575209  0.129929  1.329659 -0.101877
+3  0.332593 -0.398031  1.001786  0.371959
+4 -0.305303 -0.695755 -0.817616  0.965844
+5  0.599091 -0.984070 -1.422782 -2.028921
+6  1.295195 -0.209816  2.010686  0.409705
+7  0.268063  2.963411  1.338692 -0.083000
+8  0.332593 -0.398031  1.001786  0.371959
+</pre>
+<h1 id="Grouping-그룹화"><a href="#Grouping-그룹화" class="headerlink" title="Grouping(그룹화)"></a>Grouping(그룹화)</h1><ul>
+<li>그룹화는 다음 단계중 하나 이상을 포함하는 과정을 가리킵니다.</li>
+</ul>
+<ul>
+<li><p>몇몇 기준에 따라 여러그룹으로 데이터를 분할(splitting)</p>
+</li>
+<li><p>각 그룹에 독립적으로 함수를 적용(applying)</p>
+</li>
+<li><p>결과물들을 하나의 데이터 구조로 결합(combining)</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">df = pd.DataFrame(</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&#x27;A&#x27;</span> : [<span class="string">&#x27;foo&#x27;</span>, <span class="string">&#x27;bar&#x27;</span>, <span class="string">&#x27;foo&#x27;</span>, <span class="string">&#x27;bar&#x27;</span>, <span class="string">&#x27;foo&#x27;</span>, <span class="string">&#x27;bar&#x27;</span>, <span class="string">&#x27;foo&#x27;</span>, <span class="string">&#x27;foo&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;B&#x27;</span> : [<span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;three&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;three&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;C&#x27;</span> : np.random.randn(<span class="number">8</span>),</span><br><span class="line">        <span class="string">&#x27;D&#x27;</span> : np.random.randn(<span class="number">8</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<pre>
+     A      B         C         D
+0  foo    one  2.320590  1.009107
+1  bar    one -0.273917 -0.749687
+2  foo    two -0.817982 -0.413826
+3  bar  three  0.810967  0.348991
+4  foo    two  1.299073 -0.947616
+5  bar    two  1.743033 -1.497056
+6  foo    one  0.626893 -0.236820
+7  foo  three  2.109443  0.383633
+</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(df.groupby(<span class="string">&#x27;A&#x27;</span>).<span class="built_in">sum</span>())  <span class="comment"># A열을 기준으로 나머지 열의 값 합계 , B열은 문자열이라 제외</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(df.groupby([<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>]).<span class="built_in">sum</span>())  <span class="comment">#A-B기준으로 합계</span></span><br></pre></td></tr></table></figure>
+
+<pre>
+            C         D
+A                      
+bar  2.280084 -1.897753
+foo  5.538016 -0.205523
+                  C         D
+A   B                        
+bar one   -0.273917 -0.749687
+    three  0.810967  0.348991
+    two    1.743033 -1.497056
+foo one    2.947482  0.772287
+    three  2.109443  0.383633
+    two    0.481090 -1.361442
+</pre>
+<p>#Reshaping (변형) </p>
+<ul>
+<li>Stack(스택)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tuples=<span class="built_in">list</span>(<span class="built_in">zip</span>(*[]))</span><br></pre></td></tr></table></figure>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://kimyoungjae777.github.io/2022/03/16/2022-04-12-pands_10_minutes/" data-id="cl5eqourp0001j4svhrbcco5l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "John Doe"
+        },
+        "headline": "pandas&#39;s 10minutes",
+        "image": "https://kimyoungjae777.github.io",
+        "keywords": "",
+        "genre": "Pandas",
+        "datePublished": "2022-03-16",
+        "dateCreated": "2022-03-16",
+        "dateModified": "2022-06-26",
+        "url": "https://kimyoungjae777.github.io/2022/03/16/2022-04-12-pands_10_minutes/",
+        "description": "
+  
+    table.dataframe {
+      white-space: normal;
+      width: 100%;
+      height: 240px;
+      display: block;
+      overflow: auto;
+      font-family: Arial, sans-serif;
+      font-size: 0.9rem;
+",
+        "wordCount": 6831
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="stack-overflow" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-stack-overflow"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ppoffice/hexo-theme-hueman" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2022/03/19/github_update_blog/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            깃허브 자료올리기
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2022/03/16/broadcasting/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">pandas 의 broadcastiong </p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2022/06/12/SVM%20%EB%85%BC%EB%AC%B8%20%EB%A6%AC%EB%B7%B0%20885ba014081a464dac260c01b5243996/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Machinelearning/">-Machinelearning</a></p>
+                            <p class="item-title"><a href="/2022/06/12/SVM%20%EB%85%BC%EB%AC%B8%20%EB%A6%AC%EB%B7%B0%20885ba014081a464dac260c01b5243996/" class="title">Support vector machine</a></p>
+                            <p class="item-date"><time datetime="2022-06-12T00:00:00.000Z" itemprop="datePublished">2022-06-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2022/03/23/PostgreSQL%20d54d4/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/postgresql/Untitled.png)" alt="postgresql_설치" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Postgresql/">Postgresql</a></p>
+                            <p class="item-title"><a href="/2022/03/23/PostgreSQL%20d54d4/" class="title">postgresql_설치</a></p>
+                            <p class="item-date"><time datetime="2022-03-23T00:00:00.000Z" itemprop="datePublished">2022-03-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2022/03/23/num/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/numpy/">numpy</a></p>
+                            <p class="item-title"><a href="/2022/03/23/num/" class="title">넘파이 기초</a></p>
+                            <p class="item-date"><time datetime="2022-03-23T00:00:00.000Z" itemprop="datePublished">2022-03-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2022/03/19/github_update_blog/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/github_update_blog/Untitled.png)" alt="깃허브 자료올리기" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/git-blog/">git_blog</a></p>
+                            <p class="item-title"><a href="/2022/03/19/github_update_blog/" class="title">깃허브 자료올리기</a></p>
+                            <p class="item-date"><time datetime="2022-03-19T00:00:00.000Z" itemprop="datePublished">2022-03-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2022/03/16/2022-04-12-pands_10_minutes/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Pandas/">Pandas</a></p>
+                            <p class="item-title"><a href="/2022/03/16/2022-04-12-pands_10_minutes/" class="title">pandas&#39;s 10minutes</a></p>
+                            <p class="item-date"><time datetime="2022-03-16T00:00:00.000Z" itemprop="datePublished">2022-03-16</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Machinelearning/">-Machinelearning</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%EC%A0%84%EC%B2%98%EB%A6%AC/">-전처리</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%ED%86%B5%EA%B3%84/">-통계</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pandas/">Pandas</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Postgresql/">Postgresql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git-blog/">git_blog</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/numpy/">numpy</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2022 John Doe</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://kimyoungjae777.github.io/2022/03/16/2022-04-12-pands_10_minutes/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>Support vector machine | 김영재</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="" />
+    
+    <meta name="description" content="Support vector machine출처:한국공학대학교 경영학과 강지훈 교수님 강의. 中 분류에 대한 수적 표현에 대해 먼저 알아 보자. 학습 데이터 X(독립변수),Y(종속변수)가 있을 때 (i&#x3D;1,2,3,4,5 ….데이터의 갯수)    Y⇒{-1,1} (두 개의 클래스를 의미)   ⇒ 경우에 따라서, 클래스를 1과 -1 로 나눔 Y(정답) *">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Support vector machine">
+<meta property="og:url" content="https://kimyoungjae777.github.io/2022/03/15/Support%20ve%2033593/index.html">
+<meta property="og:site_name" content="김영재">
+<meta property="og:description" content="Support vector machine출처:한국공학대학교 경영학과 강지훈 교수님 강의. 中 분류에 대한 수적 표현에 대해 먼저 알아 보자. 학습 데이터 X(독립변수),Y(종속변수)가 있을 때 (i&#x3D;1,2,3,4,5 ….데이터의 갯수)    Y⇒{-1,1} (두 개의 클래스를 의미)   ⇒ 경우에 따라서, 클래스를 1과 -1 로 나눔 Y(정답) *">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kimyoungjae777.github.io/images/support/Untitled.png">
+<meta property="article:published_time" content="2022-03-15T00:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-19T10:41:10.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kimyoungjae777.github.io/images/support/Untitled.png">
+    
+
+    
+        <link rel="alternate" href="/" title="김영재" type="application/atom+xml" />
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Machinelearning/">-Machinelearning</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%EC%A0%84%EC%B2%98%EB%A6%AC/">-전처리</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%ED%86%B5%EA%B3%84/">-통계</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Pandas/">Pandas</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Postgresql/">Postgresql</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/git-blog/">git_blog</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/numpy/">numpy</a></li></ul>
+                                
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/null">About</a>
+                                    <ul class="main-nav-list-child">
+                                        <li class="main-nav-list-item">
+                                            
+                                        </li>
+                                    </ul>
+                                </li>
+                                
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Machinelearning/">-Machinelearning</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-Support ve 33593" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Support vector machine
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/2022/03/15/Support%20ve%2033593/" class="article-date">
+       <time datetime="2022-03-15T00:00:00.000Z" itemprop="datePublished">2022-03-15</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/2022/03/15/Support%20ve%2033593/" class="article-date">
+     <time datetime="2022-06-19T10:41:10.000Z" itemprop="dateModified">2022-06-19</time>
+  </a>
+</div>
+
+
+                
+
+                
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <h1 id="Support-vector-machine"><a href="#Support-vector-machine" class="headerlink" title="Support vector machine"></a>Support vector machine</h1><p>출처:한국공학대학교 경영학과 강지훈 교수님 강의. 中</p>
+<h2 id="분류에-대한-수적-표현에-대해-먼저-알아-보자"><a href="#분류에-대한-수적-표현에-대해-먼저-알아-보자" class="headerlink" title="분류에 대한 수적 표현에 대해 먼저 알아 보자."></a>분류에 대한 수적 표현에 대해 먼저 알아 보자.</h2><ul>
+<li>학습 데이터 X(독립변수),Y(종속변수)가 있을 때 (i&#x3D;1,2,3,4,5 ….데이터의 갯수)    Y⇒{-1,1} (두 개의 클래스를 의미)</li>
+</ul>
+<p><img src="/images/support/Untitled.png" alt="Untitled"></p>
+<p>⇒ 경우에 따라서, 클래스를 1과 -1 로 나눔</p>
+<p>Y(정답) * F(x)(예측한 정답) &gt;0 라는 것은 제대로 분류된 형태 ( 같은 부호끼리 곱하면 양수인 경우니까)</p>
+<h2 id="선형-분할-Linear-Classifier"><a href="#선형-분할-Linear-Classifier" class="headerlink" title="선형 분할(Linear Classifier)"></a>선형 분할(Linear Classifier)</h2><p><img src="/images/support/Untitled%201.png" alt="Untitled"></p>
+<p>f(x)&#x3D;  W transpose X  + b  (선형조합, 각각의 항들이 더하기로 이루어진 조합.)</p>
+<ul>
+<li>선형분할은 직선으로 나누는 것 (2차원이건 3차원이건 그 이상이건 상관 없음)</li>
+<li>b(bias) Y 절편을 의미</li>
+<li>W는 직선의 기울기</li>
+</ul>
+<h2 id="선형-분할-가능"><a href="#선형-분할-가능" class="headerlink" title="선형 분할 가능"></a>선형 분할 가능</h2><p><img src="/images/support/Untitled%202.png" alt="Untitled"></p>
+<h2 id="더-나은-최적-분류를-위한-초평면-Hyperplane-→선-보다-더-큰-차원"><a href="#더-나은-최적-분류를-위한-초평면-Hyperplane-→선-보다-더-큰-차원" class="headerlink" title="더 나은(최적) 분류를 위한 초평면(Hyperplane)→선 보다 더 큰 차원"></a>더 나은(최적) 분류를 위한 초평면(Hyperplane)→선 보다 더 큰 차원</h2><p><img src="/images/support/Untitled%203.png" alt="Untitled"></p>
+<h2 id="어떤-선이-좋은-판별선일까"><a href="#어떤-선이-좋은-판별선일까" class="headerlink" title="어떤 선이 좋은 판별선일까?"></a>어떤 선이 좋은 판별선일까?</h2><p>최적화→좋은 것 을 극대화 시키고 나쁜 것 을 극소화 시키는 것</p>
+<p> 분류에서의 최적화→ 잘 안나뉘는것 , 잘 나뉘는 것 </p>
+<p><img src="/images/support/Untitled%204.png" alt="Untitled"></p>
+<ul>
+<li>나중에 Testing data 를 돌렸을때,  가장 좋게 나누는 직선은 절반이다. 왜냐면 Test data 가 어떻게 들어올지 모르는 것 이기때문에 , 아슬아슬하게 나눈것 보다, 확실히 절반으로 나누는것이 좋다.</li>
+</ul>
+<h2 id="초평면-찾기"><a href="#초평면-찾기" class="headerlink" title="초평면 찾기."></a>초평면 찾기.</h2><ul>
+<li><p>2개의 class가 선형으로 구분 가능한 경우,</p>
+</li>
+<li><p>class1과 class2를 구분할 수 있는 선의 종류는 무수히 많음</p>
+</li>
+<li><p>두 영역을 어떻게 나누는 것이 가장 적절한가?</p>
+<p>  <img src="/images/support/Untitled%205.png" alt="Untitled"></p>
+<h2 id="최적의-분할-초평면-찾기"><a href="#최적의-분할-초평면-찾기" class="headerlink" title="최적의 분할 초평면 찾기."></a>최적의 분할 초평면 찾기.</h2><p>  c는 선형분할의 각 클래스별 거리 각 클래스별 거리를 합친것을 우리는 Margin 이라고 한다.  </p>
+<p>  Margin&#x3D;2c를 최대화 하는, w T x +b&#x3D;0 의 직선을 찾아야 하는것 이다.</p>
+</li>
+<li><p>Marign 을 최대화 시키는 초평면이 최적</p>
+</li>
+<li><p>“Learning Theory” 에 따르면, Marigin을 최대화 시키는 초평면이 일반화 오류가 가장 낮게 나타남(Test data 에서도 좋은 점수가 나온다)</p>
+</li>
+<li><p>Margin:초평면과 가장 근접한 각 클래스 관측치와의 거리의 합.</p>
+</li>
+</ul>
+<p><img src="/images/support/Untitled%206.png" alt="Untitled"></p>
+<h2 id="기하학적인-Margin"><a href="#기하학적인-Margin" class="headerlink" title="기하학적인 Margin"></a>기하학적인 Margin</h2><p><img src="/images/support/Untitled%207.png" alt="Untitled"></p>
+<h2 id="Margin-수식-유도-1-일반적인-방법"><a href="#Margin-수식-유도-1-일반적인-방법" class="headerlink" title="Margin 수식 유도 1(일반적인 방법)"></a>Margin 수식 유도 1(일반적인 방법)</h2><p><img src="/images/support/Untitled%208.png" alt="Untitled"></p>
+<h2 id="마진-수식-유도-2-고등학교때-배운-방법-응용"><a href="#마진-수식-유도-2-고등학교때-배운-방법-응용" class="headerlink" title="마진 수식 유도 2(고등학교때 배운 방법 응용."></a>마진 수식 유도 2(고등학교때 배운 방법 응용.</h2><p>점과 선 사이의 거리</p>
+<p>거리 d 가 2개이니까 2&#x2F;||W||</p>
+<p><img src="/images/support/Untitled%209.png" alt="Untitled"></p>
+<h2 id="마진을-최대화-해보자-최적화"><a href="#마진을-최대화-해보자-최적화" class="headerlink" title="마진을 최대화 해보자 .(최적화)"></a>마진을 최대화 해보자 .(최적화)</h2><ul>
+<li>||w|| 가 분모에 있기 때문에 결국 ||w|| 를 최소화 해주는것 이 2&#x2F;||w|| 를 최대화 해주는거랑 같다고 할 수 있다</li>
+<li>우리는 결국 w 값을 최소화 시켜주는것이 목적이기 때문에 제곱을 취해주든 상수를 곱해주는 상관이 없다</li>
+</ul>
+<p><img src="/images/support/Untitled%2010.png" alt="Untitled"></p>
+<h2 id="마진을-최대화-해보자-최적화-1"><a href="#마진을-최대화-해보자-최적화-1" class="headerlink" title="마진을 최대화 해보자 .(최적화)"></a>마진을 최대화 해보자 .(최적화)</h2><ul>
+<li><p>s.t→제약사항⇒ Yi(실제답) * (w*Xi +b)→모델답)  이 1보다 커야 한다. ⇒  올바르게 분류가 되는 조건.</p>
+</li>
+<li><p>convex Optimization &#x3D; 최적의 해가 항상 1개 존재하는 함수</p>
+</li>
+</ul>
+<p><img src="/images/support/Untitled%2011.png" alt="Untitled"></p>
+<ul>
+<li>Quadraitc(2차) 목적함수와 선형 제약조건  (+로 변수 조합) 이 존재</li>
+</ul>
+<p><img src="/images/support/Untitled%2012.png" alt="Untitled"></p>
+<p><img src="/images/support/Untitled%2013.png" alt="Untitled"></p>
+<h2 id="마진을-최대화-해보자-최적화-2"><a href="#마진을-최대화-해보자-최적화-2" class="headerlink" title="마진을 최대화 해보자 .(최적화)"></a>마진을 최대화 해보자 .(최적화)</h2><ul>
+<li>Lagrange Multiplier(수학적 기법) ⇒ 제약조건을 최적화조건에 녹여버리는 기법.</li>
+</ul>
+<p><img src="/images/support/Untitled%2014.png" alt="Untitled"></p>
+<h2 id="라그랑쥬를-다-풀고-나면-판별식이-나온다"><a href="#라그랑쥬를-다-풀고-나면-판별식이-나온다" class="headerlink" title="라그랑쥬를 다 풀고 나면 판별식이 나온다."></a>라그랑쥬를 다 풀고 나면 판별식이 나온다.</h2><p>-Xi tranpose X ( 학습데이터와 분류할 데이터의 내적)</p>
+<p><img src="/images/support/Untitled%2015.png" alt="Untitled"></p>
+<h2 id="SVM-지지벡터머신-의-의미-정리"><a href="#SVM-지지벡터머신-의-의미-정리" class="headerlink" title="SVM(지지벡터머신)의 의미 정리"></a>SVM(지지벡터머신)의 의미 정리</h2><ul>
+<li>판별식에 서포트벡터만 사용하기 때문에 아웃라이어에 대한 영향을 안 받음(KKT 조건으로 걸러냄)</li>
+<li>KNN 또한 이웃을 확인하는 개수인 K의 한계가 있어서 어느 elbow point 를 지나치면 정확도가 떨어진다. → 비슷한 원리 ⇒ svm 또한 분류를 유효하게 하기위해서 support verctor 만 이용해준다.</li>
+</ul>
+<p><img src="/images/support/Untitled%2016.png" alt="Untitled"></p>
+<h2 id="만약에-선형으로-완벽히-나눠지지-않는-데이터라면"><a href="#만약에-선형으로-완벽히-나눠지지-않는-데이터라면" class="headerlink" title="만약에 선형으로 완벽히 나눠지지 않는 데이터라면"></a>만약에 선형으로 완벽히 나눠지지 않는 데이터라면</h2><ul>
+<li>테스트데이터 에게는 위의 모델 보다 아래 모델이 더 좋을 것 으로 보인다. 하지만 SVM 의 제약조건에는 트레인데이터가 완벽하게 나누어져야 한다는 제약 조건이 걸려있다. 어떻게 하면 좋을까?</li>
+</ul>
+<p>.</p>
+<p><img src="/images/support/Untitled%2017.png" alt="Untitled"></p>
+<h2 id="여유를-주자-Slack-Variable-for-“Soft-Margin”"><a href="#여유를-주자-Slack-Variable-for-“Soft-Margin”" class="headerlink" title="여유를 주자(Slack Variable for “Soft Margin”)"></a>여유를 주자(Slack Variable for “Soft Margin”)</h2><ul>
+<li>error ⇒ 잘못 분류할 확율</li>
+</ul>
+<p><img src="/images/support/Untitled%2018.png" alt="Untitled"></p>
+<h2 id="Soft-Margin-SVM"><a href="#Soft-Margin-SVM" class="headerlink" title="Soft Margin SVM"></a>Soft Margin SVM</h2><p><img src="/images/support/Untitled%2019.png" alt="Untitled"></p>
+<h2 id="Non-linear-SVM"><a href="#Non-linear-SVM" class="headerlink" title="Non-linear SVM"></a>Non-linear SVM</h2><p><img src="/images/support/Untitled%2020.png" alt="Untitled"></p>
+<h2 id="커널의-종류"><a href="#커널의-종류" class="headerlink" title="커널의 종류"></a>커널의 종류</h2><p><img src="/images/support/Untitled%2021.png" alt="Untitled"></p>
+<h2 id="커널의-종류에-따라-분할-경계"><a href="#커널의-종류에-따라-분할-경계" class="headerlink" title="커널의 종류에 따라 분할 경계"></a>커널의 종류에 따라 분할 경계</h2><p><img src="/images/support/Untitled%2022.png" alt="Untitled"></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://kimyoungjae777.github.io/2022/03/15/Support%20ve%2033593/" data-id="cl5eqous20005j4sv1kmlfw34" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "John Doe"
+        },
+        "headline": "Support vector machine",
+        "image": "https://kimyoungjae777.github.io/images/support/Untitled.png",
+        "keywords": "",
+        "genre": "-Machinelearning",
+        "datePublished": "2022-03-15",
+        "dateCreated": "2022-03-15",
+        "dateModified": "2022-06-19",
+        "url": "https://kimyoungjae777.github.io/2022/03/15/Support ve 33593/",
+        "description": "Support vector machine출처:한국공학대학교 경영학과 강지훈 교수님 강의. 中
+분류에 대한 수적 표현에 대해 먼저 알아 보자.
+학습 데이터 X(독립변수),Y(종속변수)가 있을 때 (i&#x3D;1,2,3,4,5 ….데이터의 갯수)    Y⇒{-1,1} (두 개의 클래스를 의미)
+
+
+⇒ 경우에 따라서, 클래스를 1과 -1 로 나눔
+Y(정답) *",
+        "wordCount": 626
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="stack-overflow" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-stack-overflow"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ppoffice/hexo-theme-hueman" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2022/03/15/Standard%20s%2065363/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            정규화 StandardScaler
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2022/03/15/time%20series/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Time series data (시계열 데이터)</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2022/06/12/SVM%20%EB%85%BC%EB%AC%B8%20%EB%A6%AC%EB%B7%B0%20885ba014081a464dac260c01b5243996/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Machinelearning/">-Machinelearning</a></p>
+                            <p class="item-title"><a href="/2022/06/12/SVM%20%EB%85%BC%EB%AC%B8%20%EB%A6%AC%EB%B7%B0%20885ba014081a464dac260c01b5243996/" class="title">Support vector machine</a></p>
+                            <p class="item-date"><time datetime="2022-06-12T00:00:00.000Z" itemprop="datePublished">2022-06-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2022/03/23/PostgreSQL%20d54d4/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/postgresql/Untitled.png)" alt="postgresql_설치" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Postgresql/">Postgresql</a></p>
+                            <p class="item-title"><a href="/2022/03/23/PostgreSQL%20d54d4/" class="title">postgresql_설치</a></p>
+                            <p class="item-date"><time datetime="2022-03-23T00:00:00.000Z" itemprop="datePublished">2022-03-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2022/03/23/num/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/numpy/">numpy</a></p>
+                            <p class="item-title"><a href="/2022/03/23/num/" class="title">넘파이 기초</a></p>
+                            <p class="item-date"><time datetime="2022-03-23T00:00:00.000Z" itemprop="datePublished">2022-03-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2022/03/19/github_update_blog/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/github_update_blog/Untitled.png)" alt="깃허브 자료올리기" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/git-blog/">git_blog</a></p>
+                            <p class="item-title"><a href="/2022/03/19/github_update_blog/" class="title">깃허브 자료올리기</a></p>
+                            <p class="item-date"><time datetime="2022-03-19T00:00:00.000Z" itemprop="datePublished">2022-03-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2022/03/16/2022-04-12-pands_10_minutes/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Pandas/">Pandas</a></p>
+                            <p class="item-title"><a href="/2022/03/16/2022-04-12-pands_10_minutes/" class="title">pandas&#39;s 10minutes</a></p>
+                            <p class="item-date"><time datetime="2022-03-16T00:00:00.000Z" itemprop="datePublished">2022-03-16</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Machinelearning/">-Machinelearning</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%EC%A0%84%EC%B2%98%EB%A6%AC/">-전처리</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%ED%86%B5%EA%B3%84/">-통계</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pandas/">Pandas</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Postgresql/">Postgresql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git-blog/">git_blog</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/numpy/">numpy</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+
+            
+                
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2022 John Doe</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://kimyoungjae777.github.io/2022/03/15/Support%20ve%2033593/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+</body>
+</html>
